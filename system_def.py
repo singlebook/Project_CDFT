@@ -1,5 +1,8 @@
 #!/usr/bin/python
 #Read the parameters of the system from a file
+#Author: Wei Chen
+#Date: June 28, 2016
+#Place : Beijing
 
 import sys 
 from phys_para import *
@@ -78,6 +81,7 @@ class SystemDef:
 						self.LJ_parameters[i] = float(self.LJ_parameters[i])
 			elif paras[0] == "External_Field":
 				self.input_external_field = paras[1]
+		input.close()
 				
 				
 			    

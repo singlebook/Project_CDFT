@@ -3,9 +3,11 @@
 
 import sys
 import system_def
+import init_sys
 
 para = system_def.SystemDef(sys.argv[1])
 
-print para.pts, para.delta, para.size, para.input_external_field, para.beta
+init = init_sys.Init(para.input_external_field, para.beta)
 
-
+print init.field_external
+print init.density
