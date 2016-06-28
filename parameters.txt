@@ -1,0 +1,11 @@
+Temperature 300
+Size 10 10 10
+Lattice 100 100 100
+AtomType HS
+SizeApproximation BH
+CutOff 5.0
+Attractive_excess_helmholtz_free_energy FMSA
+Component 2
+Bulk_Density 0.002 0.004
+LJ_Para 3.6582 5.27 1.2321 3.817
+External_Field FieldExt.txt
