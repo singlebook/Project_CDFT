@@ -1,0 +1,64 @@
+#include "headdefs.h" 
+
+
+ struct PropertyMol * Atom;
+ 
+ int NumAtom;
+ 
+ real Temperature;
+ 
+ real Beta;
+
+ const real Kb = 1.38064852E-26; //Boltzmann constant, unit in kJ / K
+
+ const real Na = 6.022140857E23; //Avogradro constant, unit in mol^-1
+
+ const real Eps = 8.854187817E-12; //The vacuum permittivity, unit in F/m (farads per metre)
+
+ const real Q = 1.6021766208E-19; //The elementary charge, usually denoted as e or sometimes q, is the electric charge carried by a single proton, or equivalently, the magnitude of the electric charge carried by a single electron, which has charge -e. Unit in coulombs.
+
+ real Rcut; // cutoff for LJ attraction
+
+ struct Vector Size;
+
+ real * ThermWaveLength; //The thermal wavelenght "Lambda" = (beta * h * h / (2.0 * Pi * mass))
+
+ real * Pts; // Discretize the space into a given number of grid points, pts[0] is X dirextion, pts[1] is Y dirextion, pts[2] is Z dirextion
+
+ real * Delta; //The distance between two grid nodes
+ 
+ int AtomType; // 0 is HS, 1 is LJ
+
+ int HS_size_approximation; 
+ /*
+	approximation for estimating effective HS size
+   0 BH :   Baker-Handerson method
+   1 WCA:   Weitheim-Chandler-Anderson method
+   2 OCB:   Oxtoby
+	*/
+
+ int Approx_excess_free_energy;
+
+/*
+   	approximation for attractive excess helmholtz free energy
+   0 MSA:  Mean Spherical Approximation
+   1 FMSA: First order Mean Spherical Approximation
+   2 MFA: Mean field approximation
+
+    reasonable combination:
+    BH  + MFA
+    BH  + FMSA
+ */
+ 
+ NameList nameList[NUM_PARAMETER] = {
+  NameI (NumMol),
+  NameR (deltaT),
+  NameI (HeadType),
+  NameI (EndType),
+  NameI (StepDump),
+  NameI (num_his_bars),
+  NameR (MolLength),
+  NameR (LengthX),
+  NameR (LengthY),
+};
+
