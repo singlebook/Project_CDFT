@@ -48,16 +48,21 @@ typedef long int bigint;
 	 real charge;
 	 real sigma;
 	 real epslion;
+	 real miu;
 };
 
  
  extern struct PropertyMol * Atom;
  
- extern int NumAtom;
+ extern int NumAtomType;
  
  extern real Temperature;
  
  extern real Beta;
+ 
+ extern real * Density;
+ 
+ extern real * Vext;
 
  extern const real Kb; //Boltzmann constant, unit in kJ / K
 
@@ -67,6 +72,8 @@ typedef long int bigint;
 
  extern const real Q; //The elementary charge, usually denoted as e or sometimes q, is the electric charge carried by a single proton, or equivalently, the magnitude of the electric charge carried by a single electron, which has charge -e. Unit in coulombs.
 
+ extern const real h; //Planck constant  KJ * S, energy multiplied by time
+ 
  extern real Rcut; // cutoff for LJ attraction
 
  extern struct Vextor Size;
@@ -75,7 +82,7 @@ typedef long int bigint;
 
  extern struct VectorInt Pts; // Discretize the space into a given number of grid points, pts[0] is X dirextion, pts[1] is Y dirextion, pts[2] is Z dirextion
 
- extern real * Delta; //The distance between two grid nodes
+ extern struct Vextor Delta; //The distance between two grid nodes
  
  extern int AtomType; // 0 is HS, 1 is LJ
 

@@ -16,6 +16,8 @@
 #include "namelist.h"
 #include "parallel.h"
 #include "parameter.h"
+#include "setup.h"
+#include "vext.h"
 
 #endif
 

@@ -3,7 +3,7 @@
 
  struct PropertyMol * Atom;
  
- int NumAtom;
+ int NumAtomType;
  
  real Temperature;
  
@@ -17,17 +17,23 @@
 
  const real Q = 1.6021766208E-19; //The elementary charge, usually denoted as e or sometimes q, is the electric charge carried by a single proton, or equivalently, the magnitude of the electric charge carried by a single electron, which has charge -e. Unit in coulombs.
 
+ const real h = 6.626070040E-37; //Planck constant  KJ * S, energy multiplied by time
+ 
  real Rcut; // cutoff for LJ attraction
 
  struct Vector Size;
 
  real * ThermWaveLength; //The thermal wavelenght "Lambda" = (beta * h * h / (2.0 * Pi * mass))
 
- real * Pts; // Discretize the space into a given number of grid points, pts[0] is X dirextion, pts[1] is Y dirextion, pts[2] is Z dirextion
+ struct VectorInt Pts; // Discretize the space into a given number of grid points, pts[0] is X dirextion, pts[1] is Y dirextion, pts[2] is Z dirextion
 
- real * Delta; //The distance between two grid nodes
+ struct Vextor Delta; //The distance between two grid nodes
  
  int AtomType; // 0 is HS, 1 is LJ
+ 
+ real * Density;
+ 
+ real * Vext;
 
  int HS_size_approximation; 
  /*
