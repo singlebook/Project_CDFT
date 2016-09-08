@@ -39,6 +39,10 @@
  
  real_complex * F_n0, * F_n1, * F_n2, * F_n3, * F_n1V_x, * F_n1V_y, * F_n1V_z, * F_n2V_x, * F_n2V_y, * F_n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v.
  
+ real * Phi0, * Phi1, * Phi2, * Phi4, * Phi1V_x, * Phi1V_y, * Phi1V_z, * Phi2V_x, * Phi2V_y, * Phi2V_z; // The excess free energy density
+ 
+ real_complex * F_Phi0, * F_Phi1, * F_Phi2, * F_Phi4, * F_Phi1V_x, * F_Phi1V_y, * F_Phi1V_z, * F_Phi2V_x, * F_Phi2V_y, * F_Phi2V_z; // The excess free energy density
+ 
  real * Vext;
 
  int HS_size_approximation; 
