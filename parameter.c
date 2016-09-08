@@ -8,6 +8,8 @@
  real Temperature;
  
  real Beta;
+ 
+ real Radius; // The radius of the hard sphere.
 
  const real Kb = 1.38064852E-26; //Boltzmann constant, unit in kJ / K
 
@@ -32,6 +34,10 @@
  int AtomType; // 0 is HS, 1 is LJ
  
  real * Density;
+ 
+ real_complex * F_Density; // The output arrays of the FFT transform of the density.
+ 
+ real_complex * F_n0, * F_n1, * F_n2, * F_n3, * F_n1V_x, * F_n1V_y, * F_n1V_z, * F_n2V_x, * F_n2V_y, * F_n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v.
  
  real * Vext;
 

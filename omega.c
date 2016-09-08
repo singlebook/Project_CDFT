@@ -22,7 +22,7 @@ struct VectorComplex Omega1V(struct Vector K, real R){
 
  kk = VLen(K);
  VSCopy(t, -1.0 * I *  Omega3(kk, R) / (4.0 * M_PI * R), K);
-
+ 
  return t;
 }
 

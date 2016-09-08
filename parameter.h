@@ -60,7 +60,15 @@ typedef long int bigint;
  
  extern real Beta;
  
+ extern real Radius; // The radius of the hard sphere.
+ 
  extern real * Density;
+ 
+ extern real_complex * F_Density; // The output arrays of the FFT transform of the density
+ 
+ extern real * n0, * n1, * n2, * n3, * n1V_x, * n1V_y, * n1V_z, * n2V_x, * n2V_y, * n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v
+ 
+ extern real_complex * F_n0, * F_n1, * F_n2, * F_n3, * F_n1V_x, * F_n1V_y, * F_n1V_z, * F_n2V_x, * F_n2V_y, * F_n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v
  
  extern real * Vext;
 

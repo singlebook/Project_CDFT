@@ -11,6 +11,8 @@
 #include <complex.h>
 #include <mpi.h>
 #include <tgmath.h>
+#include <fftw3.h>
+
 
 #include "vdefs.h"
 #include "namelist.h"
@@ -18,6 +20,7 @@
 #include "parameter.h"
 #include "setup.h"
 #include "vext.h"
+#include "fft.h"
 
 #endif
 
