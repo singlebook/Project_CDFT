@@ -43,6 +43,10 @@
  
  real_complex * F_Phi0, * F_Phi1, * F_Phi2, * F_Phi4, * F_Phi1V_x, * F_Phi1V_y, * F_Phi1V_z, * F_Phi2V_x, * F_Phi2V_y, * F_Phi2V_z; // The excess free energy density
  
+ real * Miu_ex;
+ 
+ real_complex * F_Miu_ex;
+ 
  real * Vext;
 
  int HS_size_approximation; 

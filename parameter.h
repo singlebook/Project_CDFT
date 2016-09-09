@@ -74,6 +74,10 @@ typedef long int bigint;
  
  extern real_complex * F_Phi0, * F_Phi1, * F_Phi2, * F_Phi4, * F_Phi1V_x, * F_Phi1V_y, * F_Phi1V_z, * F_Phi2V_x, * F_Phi2V_y, * F_Phi2V_z; // The excess free energy density
  
+ extern real * Miu_ex; // The local excess chemical potential
+ 
+ extern real_complex * F_Miu_ex; // The local excess chemical potential in Fourie space.
+ 
  extern real * Vext;
 
  extern const real Kb; //Boltzmann constant, unit in kJ / K
