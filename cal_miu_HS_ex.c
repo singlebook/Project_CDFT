@@ -116,8 +116,8 @@ void Set_FFT(){
 
 void Cal_Miu_HS_ex(){
 	int i,j,u,loop;
-	struct Vector K
-	int Lenght = Pts.x*Pts.y*(Pts.z/2+1);
+	struct Vector K;
+	int Length = Pts.x*Pts.y*(Pts.z/2+1);
 	fftw_execute(p); /* repeat as needed */
 	
 	for(loop=0;loop<Length;loop++){
@@ -158,19 +158,19 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n2V_z);
 	
 	for(loop=0;loop<VProd(Pts);loop++){
-		Phi0[loop] = -1.0 * ln(1.0 - n3[loop]);
+		Phi0[loop] = -1.0 * log(1.0 - n3[loop]);
 		Phi1[loop] = n2[loop] / (1.0 - n3[loop]);
-		Phi2[loop] = n1[loop] / (1.0 - n3[loop]) + (ln(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop])) * (Sqr(n2[loop]) - Sqr(n2V_x[loop]) - Sqr(n2V_y[loop]) - Sqr(n2V_z[loop])) / (12.0 * M_PI * n3[loop]);
-		Phi3[loop] = -1.0*(ln(1.0-n3[loop])/(18.0*M_PI*Cube(n3[loop])) + (1.0 - 3.0*n3[loop] + Sqr(1.0 - n3[loop]))/(36.0*M_PI*Sqr(n3[loop])*Cube(1.0 - n3[loop]))) * (Cube(n2[loop]) - 3.0*n2[loop]*(Sqr(n2V_x[loop])+Sqr(n2V_y[loop])+Sqr(n2V_z[loop]))) \
+		Phi2[loop] = n1[loop] / (1.0 - n3[loop]) + (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop])) * (Sqr(n2[loop]) - Sqr(n2V_x[loop]) - Sqr(n2V_y[loop]) - Sqr(n2V_z[loop])) / (12.0 * M_PI * n3[loop]);
+		Phi3[loop] = -1.0*(log(1.0-n3[loop])/(18.0*M_PI*Cube(n3[loop])) + (1.0 - 3.0*n3[loop] + Sqr(1.0 - n3[loop]))/(36.0*M_PI*Sqr(n3[loop])*Cube(1.0 - n3[loop]))) * (Cube(n2[loop]) - 3.0*n2[loop]*(Sqr(n2V_x[loop])+Sqr(n2V_y[loop])+Sqr(n2V_z[loop]))) \
 		+ n0[loop] / (1.0 - n2[loop]) + (n1[loop]*n2[loop] - n1V_x[loop]*n2V_x[loop] - n1V_y[loop]*n2V_y[loop] - n1V_z[loop]*n2V_z[loop])/Sqr(1.0 - n3[loop]);
 		
 		Phi1V_x[loop] = -1.0 * n2V_x[loop] / (1.0 - n3[loop]);
 		Phi1V_y[loop] = -1.0 * n2V_y[loop] / (1.0 - n3[loop]);
 		Phi1V_z[loop] = -1.0 * n2V_z[loop] / (1.0 - n3[loop]);
 		
-		Phi2V_x[loop] = -1.0 * n1V_x[loop] / (1.0 - n3[loop]) - (ln(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_x[loop]/(6.0*M_PI*n3[loop]);
-		Phi2V_y[loop] = -1.0 * n1V_y[loop] / (1.0 - n3[loop]) - (ln(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_y[loop]/(6.0*M_PI*n3[loop]);
-		Phi2V_z[loop] = -1.0 * n1V_z[loop] / (1.0 - n3[loop]) - (ln(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_z[loop]/(6.0*M_PI*n3[loop]);
+		Phi2V_x[loop] = -1.0 * n1V_x[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_x[loop]/(6.0*M_PI*n3[loop]);
+		Phi2V_y[loop] = -1.0 * n1V_y[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_y[loop]/(6.0*M_PI*n3[loop]);
+		Phi2V_z[loop] = -1.0 * n1V_z[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_z[loop]/(6.0*M_PI*n3[loop]);
 		}
 	
 	fftw_execute(p_Phi0); /* repeat as needed */

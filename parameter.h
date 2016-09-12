@@ -52,7 +52,7 @@ typedef long int bigint;
 };
 
  
- extern struct PropertyMol * Atom;
+ extern struct PropertyAtom * Atom;
  
  extern int NumAtomType;
  
@@ -64,15 +64,23 @@ typedef long int bigint;
  
  extern real * Density;
  
+ extern real Density_bulk; // The density  of the corresponding bulk fluid.
+ 
+ extern real Miu_bulk; // The excess chemical potential of the corresponding bulk fluid.
+ 
+ extern real Alpha; // Alpha is the line search parameter in the Picard iteration.
+ 
+ extern real Stop; // Stop iteration 
+
  extern real_complex * F_Density; // The output arrays of the FFT transform of the density
  
  extern real * n0, * n1, * n2, * n3, * n1V_x, * n1V_y, * n1V_z, * n2V_x, * n2V_y, * n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v
  
  extern real_complex * F_n0, * F_n1, * F_n2, * F_n3, * F_n1V_x, * F_n1V_y, * F_n1V_z, * F_n2V_x, * F_n2V_y, * F_n2V_z; // The output arrays of the FFT transform of the n0, n1, n2, n3, n1v, n2v
  
- extern real * Phi0, * Phi1, * Phi2, * Phi4, * Phi1V_x, * Phi1V_y, * Phi1V_z, * Phi2V_x, * Phi2V_y, * Phi2V_z; // The excess free energy density
+ extern real * Phi0, * Phi1, * Phi2, * Phi3, * Phi1V_x, * Phi1V_y, * Phi1V_z, * Phi2V_x, * Phi2V_y, * Phi2V_z; // The excess free energy density
  
- extern real_complex * F_Phi0, * F_Phi1, * F_Phi2, * F_Phi4, * F_Phi1V_x, * F_Phi1V_y, * F_Phi1V_z, * F_Phi2V_x, * F_Phi2V_y, * F_Phi2V_z; // The excess free energy density
+ extern real_complex * F_Phi0, * F_Phi1, * F_Phi2, * F_Phi3, * F_Phi1V_x, * F_Phi1V_y, * F_Phi1V_z, * F_Phi2V_x, * F_Phi2V_y, * F_Phi2V_z; // The excess free energy density
  
  extern real * Miu_ex; // The local excess chemical potential
  
@@ -92,13 +100,13 @@ typedef long int bigint;
  
  extern real Rcut; // cutoff for LJ attraction
 
- extern struct Vextor Size;
+ extern struct Vector Size;
 
  extern real * ThermWaveLength; //The thermal wavelenght "Lambda" = (beta * h * h / (2.0 * Pi * mass))
 
  extern struct VectorInt Pts; // Discretize the space into a given number of grid points, pts[0] is X dirextion, pts[1] is Y dirextion, pts[2] is Z dirextion
 
- extern struct Vextor Delta; //The distance between two grid nodes
+ extern struct Vector Delta; //The distance between two grid nodes
  
  extern int AtomType; // 0 is HS, 1 is LJ
 

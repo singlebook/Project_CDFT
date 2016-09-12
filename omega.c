@@ -13,7 +13,7 @@ real Omega2(real K, real R){
 }
 
 real Omega3(real K, real R){
-	return (4.0 * M_PI / Cude(K)) * (sin(K*R) - K*R*cos(K*R));
+	return (4.0 * M_PI / Cube(K)) * (sin(K*R) - K*R*cos(K*R));
 }
 	
 struct VectorComplex Omega1V(struct Vector K, real R){
@@ -28,5 +28,7 @@ struct VectorComplex Omega1V(struct Vector K, real R){
 
 
 struct VectorComplex Omega2V(struct Vector K, real R){
- return 4.0 * M_PI * R *  Omega1V(K, R);
+  struct VectorComplex t; 
+  VSCopy(t, 4.0 * M_PI * R, Omega1V(K, R));
+  return t;
 }

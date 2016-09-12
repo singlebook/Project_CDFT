@@ -12,6 +12,10 @@ is subject to the GNU General Public License (Version 3).
 #ifndef VDEFS_H
 #define VDEFS_H
 
+#ifndef M_PI
+#define M_PI           3.14159265358979323846
+#endif
+
 /*Mathematical operations for the vector*/
 #define Sqr(x)     ((x) * (x))
 #define Cube(x)    ((x) * (x) * (x))

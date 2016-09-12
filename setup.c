@@ -1,6 +1,6 @@
 #include "headdefs.h" 
 
-void setup(){
+void Setup(){
 	int i;
 	int LCount = 0;
 	FILE * fp;
@@ -21,7 +21,7 @@ void setup(){
 	
 	AllocMem(ThermWaveLength, NumAtomType, real);
 	
-	AllocMem(Atom, NumAtomType, struct PropertyMol);
+	AllocMem(Atom, NumAtomType, struct PropertyAtom);
 	
 	while (1){
 	if (feof (fp)) break;
@@ -33,5 +33,14 @@ void setup(){
 		ThermWaveLength[i] = sqrt(Beta * Sqr(h) / (2.0 * M_PI * Atom[i].mass));
 		}
 		
+	AllocMem(Vext, VProd(Pts), real);	
+	AllocMem(Density, VProd(Pts), real);	
 	return;
+	}
+
+void Free_memory(){
+	free(ThermWaveLength);
+	free(Atom);
+	free(Vext);
+	free(Density);
 	}

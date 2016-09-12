@@ -1,4 +1,4 @@
-#include "common.h"
+#include "headdefs.h"
 
 #define NP_I  ((int *)  (nameList[k].vPtr) + j)
 #define NP_R  ((double *) (nameList[k].vPtr) + j)
