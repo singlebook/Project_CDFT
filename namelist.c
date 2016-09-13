@@ -1,5 +1,20 @@
 #include "headdefs.h"
 
+ NameList nameList[] = {
+	 NameI (NumAtomType),
+	 NameR (Temperature),
+	 NameR (Radius),
+	 NameR (Alpha),
+	 NameR (Stop),
+	 NameR (Rcut),
+	 NameR (Size),
+	 NameI (Pts),
+	 NameI (AtomType),
+	 NameI (HS_size_approximation),
+	 NameI (Approx_excess_free_energy),
+};
+
+
 #define NP_I  ((int *)  (nameList[k].vPtr) + j)
 #define NP_R  ((double *) (nameList[k].vPtr) + j)
 

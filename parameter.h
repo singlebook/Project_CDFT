@@ -7,7 +7,6 @@
 
 #ifndef PARAMETER_H
 #define	PARAMETER_H 
-#define NUM_PARAMETER 9
 
 typedef double real;
 typedef double complex real_complex;
@@ -48,7 +47,8 @@ typedef long int bigint;
 	 real charge;
 	 real sigma;
 	 real epslion;
-	 real miu;
+	 real miu; // The excess chemical potential of the corresponding bulk fluid.
+	 real density; // The density  of the corresponding bulk fluid.
 };
 
  
@@ -63,10 +63,6 @@ typedef long int bigint;
  extern real Radius; // The radius of the hard sphere.
  
  extern real * Density;
- 
- extern real Density_bulk; // The density  of the corresponding bulk fluid.
- 
- extern real Miu_bulk; // The excess chemical potential of the corresponding bulk fluid.
  
  extern real Alpha; // Alpha is the line search parameter in the Picard iteration.
  
@@ -131,7 +127,5 @@ typedef long int bigint;
     BH  + FMSA
  */
  
- 
- extern NameList nameList[NUM_PARAMETER];
 
 #endif	/* PARAMETER_H */

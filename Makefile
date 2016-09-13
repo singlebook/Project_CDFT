@@ -6,7 +6,7 @@ LDFLAGS=
 SOURCES=main.c	cal_miu_HS_ex.c  iteration.c  namelist.c  omega.c  parallel.c  parameter.c  setup.c  vext.c
 
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=cdft.exe
+EXECUTABLE=cdft
 
 all:
 	$(CC) $(SRCDIR)/*.c -o $(EXECUTABLE) $(CFLAGS) 

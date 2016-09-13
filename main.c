@@ -7,6 +7,7 @@ int main (int argc, char **argv){
 	SetVext();
 	SetInitialDensity();
 	Set_FFT();
+	Iteration();
 	Free_memory();
 	Clean_FFT();
 	return 0;

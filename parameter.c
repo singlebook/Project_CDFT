@@ -11,7 +11,7 @@
  
  real Radius; // The radius of the hard sphere.
 
- const real Kb = 1.38064852E-26; //Boltzmann constant, unit in kJ / K
+ const real Kb = 1.0 ;// 1.38064852E-26; //Boltzmann constant, unit in kJ / K
 
  const real Na = 6.022140857E23; //Avogradro constant, unit in mol^-1
 
@@ -34,10 +34,6 @@
  int AtomType; // 0 is HS, 1 is LJ
  
  real * Density;
- 
- real Density_bulk;
- 
- real Miu_bulk;
  
  real Alpha; // Alpha is the line search parameter in the Picard iteration.
  
@@ -80,7 +76,5 @@
     BH  + FMSA
  */
  
- NameList nameList[NUM_PARAMETER] = {
 
-};
 

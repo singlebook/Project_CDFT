@@ -93,9 +93,9 @@ void Set_FFT(){
 	p_n1V_y = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_y,n1V_y,FFTW_ESTIMATE);
 	p_n1V_z = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_z,n1V_z,FFTW_ESTIMATE);
 	
-	p_n2V_x = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_x,n1V_x,FFTW_ESTIMATE);
-	p_n2V_y = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_y,n1V_y,FFTW_ESTIMATE);
-	p_n2V_z = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_z,n1V_z,FFTW_ESTIMATE);
+	p_n2V_x = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n2V_x,n2V_x,FFTW_ESTIMATE);
+	p_n2V_y = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n2V_y,n2V_y,FFTW_ESTIMATE);
+	p_n2V_z = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n2V_z,n2V_z,FFTW_ESTIMATE);
 	
 	p_Phi0 = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi0,F_Phi0,FFTW_ESTIMATE);
 	p_Phi1 = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1,F_Phi1,FFTW_ESTIMATE);
@@ -106,11 +106,12 @@ void Set_FFT(){
 	p_Phi1V_y = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1V_y,F_Phi1V_y,FFTW_ESTIMATE);
 	p_Phi1V_z = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1V_z,F_Phi1V_z,FFTW_ESTIMATE);
 	
-	p_Phi2V_x = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1V_x,F_Phi1V_x,FFTW_ESTIMATE);
-	p_Phi2V_y = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1V_y,F_Phi1V_y,FFTW_ESTIMATE);
-	p_Phi2V_z = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi1V_z,F_Phi1V_z,FFTW_ESTIMATE);
+	p_Phi2V_x = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi2V_x,F_Phi2V_x,FFTW_ESTIMATE);
+	p_Phi2V_y = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi2V_y,F_Phi2V_y,FFTW_ESTIMATE);
+	p_Phi2V_z = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Phi2V_z,F_Phi2V_z,FFTW_ESTIMATE);
 	
 	p_Miu_ex = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_Miu_ex,Miu_ex,FFTW_ESTIMATE);
+	printf("Setting FFT is done\n");
 	return;
 }
 
@@ -119,7 +120,7 @@ void Cal_Miu_HS_ex(){
 	struct Vector K;
 	int Length = Pts.x*Pts.y*(Pts.z/2+1);
 	fftw_execute(p); /* repeat as needed */
-	
+
 	for(loop=0;loop<Length;loop++){
 		u = loop % (Pts.z/2+1);
 		j = (loop / (Pts.z/2+1)) % Pts.y;
@@ -141,9 +142,9 @@ void Cal_Miu_HS_ex(){
 		
 		F_n2V_x[loop] = F_Density[loop] * Omega2V(K, Radius).x / VProd(Pts);
 		F_n2V_y[loop] = F_Density[loop] * Omega2V(K, Radius).y / VProd(Pts);
-		F_n2V_z[loop] = F_Density[loop] * Omega2V(K, Radius).z / VProd(Pts);
+		F_n2V_z[loop] = F_Density[loop] * Omega2V(K, Radius).z / VProd(Pts);	
 		}
-		
+
 	fftw_execute(p_n0); /* repeat as needed */
 	fftw_execute(p_n1);
 	fftw_execute(p_n2);
@@ -156,6 +157,10 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n2V_x);
 	fftw_execute(p_n2V_y);
 	fftw_execute(p_n2V_z);
+	
+//	for(loop=0;loop<Length;loop++)		printf("%d %d %d %lf %lfI\n", (loop / (Pts.z/2+1)) / Pts.y, (loop / (Pts.z/2+1)) % Pts.y, loop % (Pts.z/2+1), creal(F_n2V_z[loop]), cimag(F_n2V_z[loop]));
+//	for(loop=0;loop<VProd(Pts);loop++)		printf("%d %d %d %lf %lf %lf\n", (loop / (Pts.z)) / Pts.y, (loop / (Pts.z)) % Pts.y, loop % (Pts.z), n2V_x[loop], n2V_y[loop], n2V_z[loop]);
+//	exit (0);		
 	
 	for(loop=0;loop<VProd(Pts);loop++){
 		Phi0[loop] = -1.0 * log(1.0 - n3[loop]);
@@ -203,7 +208,7 @@ void Cal_Miu_HS_ex(){
 		}
 		
 	fftw_execute(p_Miu_ex);
-	
+
 	return;
 }
 

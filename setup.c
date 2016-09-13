@@ -17,7 +17,11 @@ void Setup(){
 	Delta.y = Size.y / (Pts.y - 1.0);
 	Delta.z = Size.z / (Pts.z - 1.0);
 	
-	Beta = 1.0 / (Kb * Na * Temperature);
+
+//	Beta = 1.0 / (Kb * Na * Temperature);
+
+    Beta = 1.0 / (Kb * Temperature);
+
 	
 	AllocMem(ThermWaveLength, NumAtomType, real);
 	
@@ -25,16 +29,18 @@ void Setup(){
 	
 	while (1){
 	if (feof (fp)) break;
-    fscanf(fp, "%lf %lf %lf %lf %lf\n", &(Atom[LCount].mass), &(Atom[LCount].charge), &(Atom[LCount].sigma), &(Atom[LCount].epslion), &(Atom[LCount].miu));
+    fscanf(fp, "%lf %lf %lf %lf %lf %lf\n", &(Atom[LCount].mass), &(Atom[LCount].charge), &(Atom[LCount].sigma), &(Atom[LCount].epslion), &(Atom[LCount].miu), &(Atom[LCount].density));
     ++ LCount;
 	}
-	
+
 	for(i=0;i<NumAtomType;i++){
-		ThermWaveLength[i] = sqrt(Beta * Sqr(h) / (2.0 * M_PI * Atom[i].mass));
+//		ThermWaveLength[i] = sqrt(Beta * Sqr(h) / (2.0 * M_PI * Atom[i].mass));
+        ThermWaveLength[i] = 1.0;
 		}
 		
 	AllocMem(Vext, VProd(Pts), real);	
-	AllocMem(Density, VProd(Pts), real);	
+	AllocMem(Density, VProd(Pts), real);
+	printf ("Setting the calculation is done\n ");	
 	return;
 	}
 
