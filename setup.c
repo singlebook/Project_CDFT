@@ -30,6 +30,8 @@ void Setup(){
 	while (1){
 	if (feof (fp)) break;
     fscanf(fp, "%lf %lf %lf %lf %lf %lf\n", &(Atom[LCount].mass), &(Atom[LCount].charge), &(Atom[LCount].sigma), &(Atom[LCount].epslion), &(Atom[LCount].miu), &(Atom[LCount].density));
+//    printf("%lf %lf %lf %lf %lf %lf\n", Atom[0].mass,Atom[0].charge, Atom[0].sigma, Atom[0].epslion, Atom[0].miu, Atom[0].density);
+//    exit (0);
     ++ LCount;
 	}
 

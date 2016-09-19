@@ -2,10 +2,10 @@
 	 Temperature  1.2
 	 Radius		  0.5
 	 Alpha		  0.9	
-	 Stop         1E-6
+	 Stop         1E-4
 	 Rcut         10.0
 	 Size         50 50 50
-	 Pts          100 100 100
+	 Pts          100 100 500
 	 AtomType     0
 	 HS_size_approximation 0
 	 Approx_excess_free_energy 1

@@ -8,6 +8,7 @@ int main (int argc, char **argv){
 	SetInitialDensity();
 	Set_FFT();
 	Iteration();
+	Cal_g();
 	Free_memory();
 	Clean_FFT();
 	return 0;

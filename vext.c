@@ -18,9 +18,8 @@ void SetVext(){
 
 void SetInitialDensity(){
 	int loop;
-	
 	for(loop=0;loop<VProd(Pts);loop++){
-	Density[loop] = exp(Beta*(Atom[0].miu - Vext[loop]));
+        Density[loop] = Atom[0].density * exp(Beta * (Atom[0].miu - Vext[loop]));
 		}
 	printf("Setting the initial density is done\n");
 	return;

@@ -126,9 +126,9 @@ void Cal_Miu_HS_ex(){
 		j = (loop / (Pts.z/2+1)) % Pts.y;
 		i = (loop / (Pts.z/2+1)) / Pts.y;
 		
-		K.x = 2 * M_PI * i / Pts.x;
-		K.y = 2 * M_PI * j / Pts.y;
-		K.z = 2 * M_PI * u / Pts.z;
+		K.x = 2.0 * M_PI * i / Size.x;
+		K.y = 2.0 * M_PI * j / Size.y;
+		K.z = 2.0 * M_PI * u / Size.z;
 		
 		
 		F_n0[loop] = F_Density[loop] * Omega0(VLen(K), Radius) / VProd(Pts);
@@ -157,11 +157,7 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n2V_x);
 	fftw_execute(p_n2V_y);
 	fftw_execute(p_n2V_z);
-	
-//	for(loop=0;loop<Length;loop++)		printf("%d %d %d %lf %lfI\n", (loop / (Pts.z/2+1)) / Pts.y, (loop / (Pts.z/2+1)) % Pts.y, loop % (Pts.z/2+1), creal(F_n2V_z[loop]), cimag(F_n2V_z[loop]));
-//	for(loop=0;loop<VProd(Pts);loop++)		printf("%d %d %d %lf %lf %lf\n", (loop / (Pts.z)) / Pts.y, (loop / (Pts.z)) % Pts.y, loop % (Pts.z), n2V_x[loop], n2V_y[loop], n2V_z[loop]);
-//	exit (0);		
-	
+		
 	for(loop=0;loop<VProd(Pts);loop++){
 		Phi0[loop] = -1.0 * log(1.0 - n3[loop]);
 		Phi1[loop] = n2[loop] / (1.0 - n3[loop]);
@@ -196,9 +192,9 @@ void Cal_Miu_HS_ex(){
 		j = (loop / (Pts.z/2+1)) % Pts.y;
 		i = (loop / (Pts.z/2+1)) / Pts.y;
 		
-		K.x = 2 * M_PI * i / Pts.x;
-		K.y = 2 * M_PI * j / Pts.y;
-		K.z = 2 * M_PI * u / Pts.z;
+		K.x = 2 * M_PI * i / Size.x;
+		K.y = 2 * M_PI * j / Size.y;
+		K.z = 2 * M_PI * u / Size.z;
 		
 		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) + F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
 		+ F_Phi1V_x[loop]*Omega1V(K, Radius).x + F_Phi1V_y[loop]*Omega1V(K, Radius).y + F_Phi1V_z[loop]*Omega1V(K, Radius).z \
@@ -208,7 +204,6 @@ void Cal_Miu_HS_ex(){
 		}
 		
 	fftw_execute(p_Miu_ex);
-
 	return;
 }
 
