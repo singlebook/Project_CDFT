@@ -16,6 +16,9 @@ is subject to the GNU General Public License (Version 3).
 #define M_PI           3.14159265358979323846
 #endif
 
+#define HS 0
+#define LJ 1
+
 /*Mathematical operations for the vector*/
 #define Sqr(x)     ((x) * (x))
 #define Cube(x)    ((x) * (x) * (x))

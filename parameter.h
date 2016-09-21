@@ -64,6 +64,10 @@ typedef long int bigint;
  
  extern real * Density;
  
+ extern real * Ulj;
+ 
+ extern real_complex * F_Ulj;
+ 
  extern real Alpha; // Alpha is the line search parameter in the Picard iteration.
  
  extern real Stop; // Stop iteration 

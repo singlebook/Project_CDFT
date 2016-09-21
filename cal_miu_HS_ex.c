@@ -1,6 +1,7 @@
 #include "headdefs.h"
 
 fftw_plan p;
+fftw_plan p_Ulj;
 fftw_plan p_n0;
 fftw_plan p_n1;
 fftw_plan p_n2;
@@ -25,6 +26,8 @@ fftw_plan p_Miu_ex;
 
 void Set_FFT(){
 	F_Density = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
+	
+	F_Ulj = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	
 	F_n0 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	F_n1 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
@@ -83,6 +86,10 @@ void Set_FFT(){
 	F_Miu_ex = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	
 	p = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Density,F_Density,FFTW_ESTIMATE);
+	
+	p_Ulj = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Ulj,F_Ulj,FFTW_ESTIMATE);
+	fftw_execute(p_Ulj);
+	
 	
 	p_n0 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n0,n0,FFTW_ESTIMATE);
 	p_n1 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1,n1,FFTW_ESTIMATE);
@@ -157,21 +164,37 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n2V_x);
 	fftw_execute(p_n2V_y);
 	fftw_execute(p_n2V_z);
+	
+
 		
 	for(loop=0;loop<VProd(Pts);loop++){
 		Phi0[loop] = -1.0 * log(1.0 - n3[loop]);
 		Phi1[loop] = n2[loop] / (1.0 - n3[loop]);
+
+/*		// Shuangliang Zhao
 		Phi2[loop] = n1[loop] / (1.0 - n3[loop]) + (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop])) * (Sqr(n2[loop]) - Sqr(n2V_x[loop]) - Sqr(n2V_y[loop]) - Sqr(n2V_z[loop])) / (12.0 * M_PI * n3[loop]);
 		Phi3[loop] = -1.0*(log(1.0-n3[loop])/(18.0*M_PI*Cube(n3[loop])) + (1.0 - 3.0*n3[loop] + Sqr(1.0 - n3[loop]))/(36.0*M_PI*Sqr(n3[loop])*Cube(1.0 - n3[loop]))) * (Cube(n2[loop]) - 3.0*n2[loop]*(Sqr(n2V_x[loop])+Sqr(n2V_y[loop])+Sqr(n2V_z[loop]))) \
 		+ n0[loop] / (1.0 - n2[loop]) + (n1[loop]*n2[loop] - n1V_x[loop]*n2V_x[loop] - n1V_y[loop]*n2V_y[loop] - n1V_z[loop]*n2V_z[loop])/Sqr(1.0 - n3[loop]);
-		
+*/		
+        // M. P. Sears
+        Phi2[loop] = n1[loop] / (1.0 - n3[loop]) + Sqr(n2[loop])/(8.0*M_PI*Sqr(1.0-n3[loop]))-(Sqr(n2V_x[loop]) + Sqr(n2V_y[loop]) + Sqr(n2V_z[loop]))/(8.0*M_PI*Sqr(1.0-n3[loop]));
+        Phi3[loop] = n0[loop] / (1.0 - n3[loop]) + n1[loop]*n2[loop]/Sqr(1.0-n3[loop]) + Cube(n2[loop])/(12.0*M_PI*Cube(1.0-n3[loop])) - (n1V_x[loop]*n2V_x[loop] + n1V_y[loop]*n2V_y[loop] + n1V_z[loop]*n2V_z[loop]) / Sqr(1.0-n3[loop])\
+         - n2[loop]* (Sqr(n2V_x[loop]) + Sqr(n2V_y[loop]) + Sqr(n2V_z[loop]))/(4.0*M_PI*Cube(1.0-n3[loop]));
+        
+         
 		Phi1V_x[loop] = -1.0 * n2V_x[loop] / (1.0 - n3[loop]);
 		Phi1V_y[loop] = -1.0 * n2V_y[loop] / (1.0 - n3[loop]);
 		Phi1V_z[loop] = -1.0 * n2V_z[loop] / (1.0 - n3[loop]);
-		
+/*		
+        // Shuabngliang Zhao
 		Phi2V_x[loop] = -1.0 * n1V_x[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_x[loop]/(6.0*M_PI*n3[loop]);
 		Phi2V_y[loop] = -1.0 * n1V_y[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_y[loop]/(6.0*M_PI*n3[loop]);
 		Phi2V_z[loop] = -1.0 * n1V_z[loop] / (1.0 - n3[loop]) - (log(1.0 - n3[loop])/n3[loop] + 1.0 / Sqr(1.0 - n3[loop]))*n2[loop]*n2V_z[loop]/(6.0*M_PI*n3[loop]);
+*/		
+        // M.P. Sears
+		Phi2V_x[loop] = -1.0 * n1V_x[loop] / (1.0 - n3[loop]) - n2[loop]*n2V_x[loop]/(4.0*M_PI*Sqr(1.0-n3[loop]));
+		Phi2V_y[loop] = -1.0 * n1V_y[loop] / (1.0 - n3[loop]) - n2[loop]*n2V_y[loop]/(4.0*M_PI*Sqr(1.0-n3[loop]));
+		Phi2V_z[loop] = -1.0 * n1V_z[loop] / (1.0 - n3[loop]) - n2[loop]*n2V_z[loop]/(4.0*M_PI*Sqr(1.0-n3[loop]));
 		}
 	
 	fftw_execute(p_Phi0); /* repeat as needed */
@@ -196,9 +219,10 @@ void Cal_Miu_HS_ex(){
 		K.y = 2 * M_PI * j / Size.y;
 		K.z = 2 * M_PI * u / Size.z;
 		
-		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) + F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
+		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) +F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
 		+ F_Phi1V_x[loop]*Omega1V(K, Radius).x + F_Phi1V_y[loop]*Omega1V(K, Radius).y + F_Phi1V_z[loop]*Omega1V(K, Radius).z \
-		+ F_Phi2V_x[loop]*Omega2V(K, Radius).x + F_Phi2V_y[loop]*Omega2V(K, Radius).y + F_Phi2V_z[loop]*Omega2V(K, Radius).z;
+		+ F_Phi2V_x[loop]*Omega2V(K, Radius).x + F_Phi2V_y[loop]*Omega2V(K, Radius).y + F_Phi2V_z[loop]*Omega2V(K, Radius).z \
+		/*+ F_Density[loop]*F_Ulj[loop]*/;
 		
 		F_Miu_ex[loop] /= VProd(Pts);
 		}
@@ -209,6 +233,7 @@ void Cal_Miu_HS_ex(){
 
 void Clean_FFT(){
 	fftw_destroy_plan (p);
+	fftw_destroy_plan (p_Ulj);
 	fftw_destroy_plan (p_n0);
 	fftw_destroy_plan (p_n1);
 	fftw_destroy_plan (p_n2);
@@ -256,7 +281,7 @@ void Clean_FFT(){
     free(Phi2V_z);
     
     fftw_free(F_Density);
-    
+    fftw_free(F_Ulj);
     fftw_free(F_n0);
     fftw_free(F_n1);
     fftw_free(F_n2);

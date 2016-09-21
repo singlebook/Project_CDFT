@@ -15,7 +15,7 @@ void Iteration(){
 		Sum = 0.0;
 		Cal_Miu_HS_ex();
 		for(loop=0;loop<VProd(Pts);loop++){
-			Density_temp = Atom[0].density * exp(Beta * (Atom[0].miu - Miu_ex[loop] - Vext[loop]));
+			Density_temp = Atom[0].density * exp(Atom[0].miu - Miu_ex[loop] - Beta * Vext[loop]);
 			Sum +=Sqr((1.0-Alpha) * Density_temp + Alpha * Density[loop] - Density[loop]);
 			Density[loop] = (1.0-Alpha) * Density_temp + Alpha * Density[loop];
 			}

@@ -3,7 +3,6 @@
  NameList nameList[] = {
 	 NameI (NumAtomType),
 	 NameR (Temperature),
-	 NameR (Radius),
 	 NameR (Alpha),
 	 NameR (Stop),
 	 NameR (Rcut),
