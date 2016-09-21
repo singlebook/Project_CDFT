@@ -1,11 +1,10 @@
 	 NumAtomType  1
-	 Temperature  1.2
-	 Radius		  0.5
+	 Temperature  2.0
 	 Alpha		  0.9	
-	 Stop         1E-4
-	 Rcut         10.0
-	 Size         50 50 50
-	 Pts          100 100 500
+	 Stop         1E-6
+	 Rcut         5.0
+	 Size         10 10 10
+	 Pts          100 100 100
 	 AtomType     0
 	 HS_size_approximation 0
 	 Approx_excess_free_energy 1
