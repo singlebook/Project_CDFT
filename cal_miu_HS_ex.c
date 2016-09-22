@@ -222,12 +222,14 @@ void Cal_Miu_HS_ex(){
 		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) +F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
 		+ F_Phi1V_x[loop]*Omega1V(K, Radius).x + F_Phi1V_y[loop]*Omega1V(K, Radius).y + F_Phi1V_z[loop]*Omega1V(K, Radius).z \
 		+ F_Phi2V_x[loop]*Omega2V(K, Radius).x + F_Phi2V_y[loop]*Omega2V(K, Radius).y + F_Phi2V_z[loop]*Omega2V(K, Radius).z \
-		/*+ F_Density[loop]*F_Ulj[loop]*/;
+		+ Beta * F_Density[loop]*F_Ulj[loop];
 		
 		F_Miu_ex[loop] /= VProd(Pts);
 		}
 		
 	fftw_execute(p_Miu_ex);
+	for(loop=0;loop<VProd(Pts);loop++) printf("%lf  %lf\n", Miu_ex[loop], Atom[0].miu);
+	exit (0);
 	return;
 }
 

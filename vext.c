@@ -15,6 +15,7 @@ void SetVext(){
 		else Vext[loop] = 0.0; 
    }
 */
+/*
     // LJ 12-6 Wall
 	for(k=0;k<Pts.z;k++){
 		rr = Sqr(k*Delta.z);
@@ -32,7 +33,8 @@ void SetVext(){
 				}
 			}
 	}
-	
+*/  	
+    for(loop=0;loop<VProd(Pts);loop++) Vext[loop] = 0.0;
 	printf("Setting the external potential is done\n");
 	return;
 	}
