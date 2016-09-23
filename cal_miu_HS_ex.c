@@ -1,7 +1,6 @@
 #include "headdefs.h"
 
 fftw_plan p;
-fftw_plan p_Ulj;
 fftw_plan p_n0;
 fftw_plan p_n1;
 fftw_plan p_n2;
@@ -24,10 +23,47 @@ fftw_plan p_Phi2V_y;
 fftw_plan p_Phi2V_z;
 fftw_plan p_Miu_ex;
 
+/*The Integrand of Eq.(17) in JCP 124,144709(2006)*/
+real Integrand(real r, real k){
+	real t;
+	t = Cube(Atom[0].sigma/r);
+	if(k!=0)
+	return 4.0*M_PI*sin(k*r)*r*(4.0*Atom[0].epslion*(Sqr(Sqr(t))-Sqr(t)))/k;
+	else
+	return 4.0*M_PI*Sqr(r)*(4.0*Atom[0].epslion*(Sqr(Sqr(t))-Sqr(t)));	
+	}
+
+/*Simpson method for calculating the Integrand defined above*/
+real simp(real a,real b,real c,real eps)
+  { int n,k;
+    real h,t1,t2,s1,s2,ep,p,x;
+    n=1; h=b-a;
+    t1=h*(Integrand(a,c)+Integrand(b,c))/2.0;
+    s1=t1;
+    ep=eps+1.0;
+    while (ep>=eps)
+      { p=0.0;
+        for (k=0;k<=n-1;k++)
+          { x=a+(k+0.5)*h;
+            p=p+Integrand(x,c);
+          }
+        t2=(t1+h*p)/2.0;
+        s2=(4.0*t2-t1)/3.0;
+        ep=fabs(s2-s1);
+        t1=t2; s1=s2; n=n+n; h=h/2.0;
+      }
+    return(s2);
+  }
+
 void Set_FFT(){
+	
+	int i,j,u,loop;
+	struct Vector K;
+	int Length = Pts.x*Pts.y*(Pts.z/2+1);
+	
 	F_Density = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	
-	F_Ulj = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
+    F_Ulj = (real*) fftw_malloc(sizeof(real) * Pts.x * Pts.y * (Pts.z/2+1));
 	
 	F_n0 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	F_n1 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
@@ -87,10 +123,23 @@ void Set_FFT(){
 	
 	p = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Density,F_Density,FFTW_ESTIMATE);
 	
-	p_Ulj = fftw_plan_dft_r2c_3d(Pts.x,Pts.y,Pts.z,Ulj,F_Ulj,FFTW_ESTIMATE);
-	fftw_execute(p_Ulj);
-	
-	
+
+    // make a table for the fourie transform of the LJ 12-6 potential.  
+    // There is no analytical form for the fourie transform of the LJ 12-6 potential, I could only prepare it at the very beginning of the simulation.
+    if(AtomType==LJ){
+	for(loop=0;loop<Length;loop++){
+		u = loop % (Pts.z/2+1);
+		j = (loop / (Pts.z/2+1)) % Pts.y;
+		i = (loop / (Pts.z/2+1)) / Pts.y;
+		
+		K.x = 2.0 * M_PI * i / Size.x;
+		K.y = 2.0 * M_PI * j / Size.y;
+		K.z = 2.0 * M_PI * u / Size.z;
+		
+		F_Ulj[loop] = simp(Atom[0].sigma,Rcut,VLen(K),Stop);
+		}
+	}
+		
 	p_n0 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n0,n0,FFTW_ESTIMATE);
 	p_n1 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1,n1,FFTW_ESTIMATE);
 	p_n2 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n2,n2,FFTW_ESTIMATE);
@@ -164,7 +213,6 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n2V_x);
 	fftw_execute(p_n2V_y);
 	fftw_execute(p_n2V_z);
-	
 
 		
 	for(loop=0;loop<VProd(Pts);loop++){
@@ -219,23 +267,26 @@ void Cal_Miu_HS_ex(){
 		K.y = 2 * M_PI * j / Size.y;
 		K.z = 2 * M_PI * u / Size.z;
 		
+		if(AtomType == LJ){
 		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) +F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
 		+ F_Phi1V_x[loop]*Omega1V(K, Radius).x + F_Phi1V_y[loop]*Omega1V(K, Radius).y + F_Phi1V_z[loop]*Omega1V(K, Radius).z \
 		+ F_Phi2V_x[loop]*Omega2V(K, Radius).x + F_Phi2V_y[loop]*Omega2V(K, Radius).y + F_Phi2V_z[loop]*Omega2V(K, Radius).z \
-		+ Beta * F_Density[loop]*F_Ulj[loop];
-		
+		+ Beta*F_Density[loop]*F_Ulj[loop];
+	    } 
+	    else if(AtomType == HS){
+		F_Miu_ex[loop] = F_Phi0[loop]*Omega0(VLen(K), Radius) +F_Phi1[loop]*Omega1(VLen(K), Radius) + F_Phi2[loop]*Omega2(VLen(K), Radius) + F_Phi3[loop]*Omega3(VLen(K), Radius) \
+		+ F_Phi1V_x[loop]*Omega1V(K, Radius).x + F_Phi1V_y[loop]*Omega1V(K, Radius).y + F_Phi1V_z[loop]*Omega1V(K, Radius).z \
+		+ F_Phi2V_x[loop]*Omega2V(K, Radius).x + F_Phi2V_y[loop]*Omega2V(K, Radius).y + F_Phi2V_z[loop]*Omega2V(K, Radius).z;			
+		}
 		F_Miu_ex[loop] /= VProd(Pts);
 		}
 		
 	fftw_execute(p_Miu_ex);
-	for(loop=0;loop<VProd(Pts);loop++) printf("%lf  %lf\n", Miu_ex[loop], Atom[0].miu);
-	exit (0);
 	return;
 }
 
 void Clean_FFT(){
 	fftw_destroy_plan (p);
-	fftw_destroy_plan (p_Ulj);
 	fftw_destroy_plan (p_n0);
 	fftw_destroy_plan (p_n1);
 	fftw_destroy_plan (p_n2);
@@ -283,7 +334,7 @@ void Clean_FFT(){
     free(Phi2V_z);
     
     fftw_free(F_Density);
-    fftw_free(F_Ulj);
+    free(F_Ulj);
     fftw_free(F_n0);
     fftw_free(F_n1);
     fftw_free(F_n2);

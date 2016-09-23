@@ -35,9 +35,7 @@
  
  real * Density;
  
- real * Ulj;
- 
- real_complex * F_Ulj;
+ real * F_Ulj;
  
  real Alpha; // Alpha is the line search parameter in the Picard iteration.
  

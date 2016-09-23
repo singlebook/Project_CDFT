@@ -1,5 +1,6 @@
 #include "headdefs.h" 
 
+/*The excess chemical potential for HS calculated from SPT*/
 real P1(real sigma, real rho_0) {
 	real P0;
 	real t0;
@@ -55,8 +56,7 @@ real P2(real sigma, real epslion, real rho){
 	2.593535277438717E2,\
 	-2.694523589434903E3,\
 	-7.218487631550215E2,\
-	1.721802063863269E2,\				
-	};
+	1.721802063863269E2};
 	
 	real gama = 3.0;
 	real F = exp(-gama*Sqr(rho));
@@ -99,8 +99,7 @@ real P2(real sigma, real epslion, real rho){
 	P += rho*Temperature;	
 	miu = A + P/rho - Temperature;
 	
-	return Beta*miu;
-	
+	return Beta*miu;	
 	}
 
 void Setup(){
@@ -139,7 +138,6 @@ void Setup(){
 		Atom[LCount].miu = P2(Atom[LCount].sigma, Atom[LCount].epslion, Atom[LCount].density);		
 	else if(AtomType==HS)
 	    Atom[LCount].miu = P1(Atom[LCount].sigma, Atom[LCount].density);
-	printf("%lf\n", Atom[LCount].miu);exit(0);
     ++ LCount;
 	}
 
@@ -147,18 +145,18 @@ void Setup(){
 //		ThermWaveLength[i] = sqrt(Beta * Sqr(h) / (2.0 * M_PI * Atom[i].mass));
         ThermWaveLength[i] = 1.0;
 		}
-	if(AtomType==LJ)
-		Radius = 0.5 *  Atom[0].sigma * (1.0+0.2977*Temperature) / (1.0+0.33163*Temperature+0.0010477*Sqr(Temperature));		
-	else if(AtomType==HS)
+	if(AtomType==LJ){
+		Radius = 0.5 *  Atom[0].sigma * (1.0+0.2977*Temperature) / (1.0+0.33163*Temperature+0.0010477*Sqr(Temperature));
+	}		
+	else if(AtomType==HS){
 	    Radius = 0.5 *  Atom[0].sigma;
-	    
+	}
+	       
 	AllocMem(Vext, VProd(Pts), real);	
 	AllocMem(Density, VProd(Pts), real);
-	AllocMem(Ulj, VProd(Pts), real);
 	
 	SetVext();
 	SetInitialDensity();
-	SetLJ();
 	Set_FFT();
 	
 	printf ("Setting the calculation is done\n ");	
@@ -170,6 +168,5 @@ void Free_memory(){
 	free(Atom);
 	free(Vext);
 	free(Density);
-	free(Ulj);
 	Clean_FFT();
 	}
