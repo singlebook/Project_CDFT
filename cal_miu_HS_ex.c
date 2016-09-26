@@ -1,6 +1,7 @@
 #include "headdefs.h"
 
 fftw_plan p;
+fftw_plan p_rho_bar;
 fftw_plan p_n0;
 fftw_plan p_n1;
 fftw_plan p_n2;
@@ -62,8 +63,8 @@ void Set_FFT(){
 	int Length = Pts.x*Pts.y*(Pts.z/2+1);
 	
 	F_Density = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
-	
-    F_Ulj = (real*) fftw_malloc(sizeof(real) * Pts.x * Pts.y * (Pts.z/2+1));
+	F_rho_bar = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
+    AllocMem(F_Ulj, Pts.x * Pts.y * (Pts.z/2+1), real);
 	
 	F_n0 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
 	F_n1 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Pts.x * Pts.y * (Pts.z/2+1));
@@ -145,6 +146,8 @@ void Set_FFT(){
 	p_n2 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n2,n2,FFTW_ESTIMATE);
 	p_n3 = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n3,n3,FFTW_ESTIMATE);
 	
+	p_rho_bar = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_rho_bar,rho_bar,FFTW_ESTIMATE);
+	
 	p_n1V_x = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_x,n1V_x,FFTW_ESTIMATE);
 	p_n1V_y = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_y,n1V_y,FFTW_ESTIMATE);
 	p_n1V_z = fftw_plan_dft_c2r_3d(Pts.x,Pts.y,Pts.z,F_n1V_z,n1V_z,FFTW_ESTIMATE);
@@ -192,6 +195,8 @@ void Cal_Miu_HS_ex(){
 		F_n2[loop] = F_Density[loop] * Omega2(VLen(K), Radius) / VProd(Pts);
 		F_n3[loop] = F_Density[loop] * Omega3(VLen(K), Radius) / VProd(Pts);
 		
+		F_rho_bar[loop] = (3.0/(4.0*M_PI*Cube(2.0*Radius)))*F_Density[loop] * Omega3(VLen(K), 2.0*Radius) / VProd(Pts);
+		
 		F_n1V_x[loop] = F_Density[loop] * Omega1V(K, Radius).x / VProd(Pts);
 		F_n1V_y[loop] = F_Density[loop] * Omega1V(K, Radius).y / VProd(Pts);
 		F_n1V_z[loop] = F_Density[loop] * Omega1V(K, Radius).z / VProd(Pts);
@@ -205,6 +210,8 @@ void Cal_Miu_HS_ex(){
 	fftw_execute(p_n1);
 	fftw_execute(p_n2);
 	fftw_execute(p_n3);
+	
+	fftw_execute(p_rho_bar);
 	
 	fftw_execute(p_n1V_x);
 	fftw_execute(p_n1V_y);
@@ -287,6 +294,7 @@ void Cal_Miu_HS_ex(){
 
 void Clean_FFT(){
 	fftw_destroy_plan (p);
+	fftw_destroy_plan (p_rho_bar);
 	fftw_destroy_plan (p_n0);
 	fftw_destroy_plan (p_n1);
 	fftw_destroy_plan (p_n2);
@@ -334,6 +342,7 @@ void Clean_FFT(){
     free(Phi2V_z);
     
     fftw_free(F_Density);
+    fftw_free(F_rho_bar);
     free(F_Ulj);
     fftw_free(F_n0);
     fftw_free(F_n1);

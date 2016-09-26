@@ -55,6 +55,10 @@
  
  real_complex * F_Miu_ex;
  
+ real * rho_bar;
+ 
+ real_complex * F_rho_bar;
+ 
  real * Vext;
 
  int HS_size_approximation; 

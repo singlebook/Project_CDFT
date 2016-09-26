@@ -19,6 +19,7 @@
 #include "parameter.h"
 #include "parallel.h"
 #include "omega.h"
+#include "excess_free_energy.h"
 #include "setup.h"
 #include "vext.h"
 #include "cal_miu_HS_ex.h"
