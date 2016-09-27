@@ -53,7 +53,6 @@ void Setup(){
 	       
 	AllocMem(Vext, VProd(Pts), real);	
 	AllocMem(Density, VProd(Pts), real);
-	AllocMem(rho_bar, VProd(Pts), real);
 	
 	SetVext();
 	SetInitialDensity();
@@ -68,6 +67,5 @@ void Free_memory(){
 	free(Atom);
 	free(Vext);
 	free(Density);
-	free(rho_bar);
 	Clean_FFT();
 	}

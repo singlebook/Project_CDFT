@@ -7,14 +7,6 @@ real F_MFA(real rho){
      return Beta*t;
 }
 
-/*
-real F_HS(real rho, real sigma){
-     real eta = M_PI*Cube(sigma)*rho/6.0;
-	 real t;
-	 t = log(eta)+1.0/Sqr(1.0-eta)+2.0/(1.0-eta) - (log(Cube(ThermWaveLength[0])*rho) - 1.0);
-	 return t;
-}
-*/
 
 real F_HS(real rho, real sigma){
      real eta = M_PI*Cube(sigma)*rho/6.0;

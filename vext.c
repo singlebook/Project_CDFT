@@ -8,24 +8,21 @@ void SetVext(){
 	real rr;
 	/*I set here the hard wall potential as a test.
 	 * The hard wall is put at the bottom of the simulation box.*/
-/*	 
+	 
   //Hard Wall	
 	for(loop=0;loop<VProd(Pts);loop++){
-		if(loop%Pts.z == 0) Vext[loop] = 100.0;
+		if(loop%Pts.z == 0  ) Vext[loop] = 100.0;
 		else Vext[loop] = 0.0; 
    }
-*/
+
 /*
     // LJ 12-6 Wall
 	for(k=0;k<Pts.z;k++){
 		rr = Sqr(k*Delta.z);
 		for(j=0;j<Pts.y;j++){
 			for(i=0;i<Pts.x;i++){
-				if( rr > Sqr(Rcut)){
-					Vext[k+Pts.z*(j+Pts.y*i)] = 0.0;
-                  }
-		       else if(rr <= Sqr(Rcut) && rr>0.0){
-					Vext[k+Pts.z*(j+Pts.y*i)] = 4.0 * Atom[0].epslion * (pow(Atom[0].sigma, 12)/pow(rr, 6) - pow(Atom[0].sigma, 6)/pow(rr, 3));
+		       if(rr>0.0){
+					Vext[k+Pts.z*(j+Pts.y*i)] = 8.0 * Atom[0].epslion * (pow(Atom[0].sigma, 12)/pow(rr, 6) - pow(Atom[0].sigma, 6)/pow(rr, 3));
 					} 
 			   else if(rr == 0.0){
 					Vext[k+Pts.z*(j+Pts.y*i)] = 1000.0;
@@ -33,11 +30,12 @@ void SetVext(){
 				}
 			}
 	}
-*/  
-	
+*/
+  
+/*	
     // No Vext
     for(loop=0;loop<VProd(Pts);loop++) Vext[loop] = 0.0;
-
+*/
 	printf("Setting the external potential is done\n");
 	return;
 	}

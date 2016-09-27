@@ -84,10 +84,6 @@ typedef long int bigint;
  
  extern real_complex * F_Miu_ex; // The local excess chemical potential in Fourie space.
  
- extern real * rho_bar; // weight density in WDA method
- 
- extern real_complex * F_rho_bar;
- 
  extern real * Vext;
 
  extern const real Kb; //Boltzmann constant, unit in kJ / K

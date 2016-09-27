@@ -15,10 +15,7 @@ void Iteration(){
 		Sum = 0.0;
 		Cal_Miu_HS_ex();
 		for(loop=0;loop<VProd(Pts);loop++){
-			if(AtomType == HS) Density_temp = Atom[0].density * exp(Atom[0].miu - Miu_ex[loop] - Beta * Vext[loop]);
-			else if (AtomType == LJ) Density_temp = Atom[0].density * exp(Atom[0].miu - (Miu_ex[loop]+P2(Atom[0].sigma, Atom[0].epslion, rho_bar[loop], "Excess free energy")-F_HS(rho_bar[loop], 2.0*Radius) - F_MFA(rho_bar[loop])) \
-			- Beta * Vext[loop]);
-			printf("%lf %lf\n",Atom[0].miu , +P2(Atom[0].sigma, Atom[0].epslion, rho_bar[loop], "Excess free energy")-F_HS(rho_bar[loop], 2.0*Radius) - F_MFA(rho_bar[loop]));exit(0);
+			Density_temp = Atom[0].density * exp(Atom[0].miu - Miu_ex[loop] - Beta * Vext[loop]);
 			Sum +=Sqr((1.0-Alpha) * Density_temp + Alpha * Density[loop] - Density[loop]);
 			Density[loop] = (1.0-Alpha) * Density_temp + Alpha * Density[loop];
 			}
